@@ -8,16 +8,16 @@ var studentRouter = require("./routes/student");
 var courseRouter = require("./routes/courses");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+const authRouter = require("./routes/auth");
 
 mongoose
   .connect("mongodb://localhost:27017/task")
   .then(() => {
-    console.log("Connection Successfull");
+    console.log("Connection Successfully");
   })
   .catch((err) => {
     console.log("Received an Error");
   });
-
 var app = express();
 
 // view engine setup
@@ -36,6 +36,8 @@ app.use("/student", studentRouter);
 app.use("/courses", courseRouter);
 app.use("/:id", studentRouter);
 app.use("/:id", courseRouter);
+app.use("/signup", authRouter);
+// app.use("/:id", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
