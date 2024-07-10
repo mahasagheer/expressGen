@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const generateRandomKey = (length = 32) => {
   return crypto.randomBytes(length).toString("hex");
 };
