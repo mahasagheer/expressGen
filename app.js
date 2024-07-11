@@ -9,6 +9,8 @@ var courseRouter = require("./routes/courses");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const productRouter = require("./routes/product");
+const { authentication } = require("./middleware/products");
 
 mongoose
   .connect("mongodb://localhost:27017/task")
@@ -32,13 +34,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/student", studentRouter);
-app.use("/courses", courseRouter);
-app.use("/:id", studentRouter);
-app.use("/:id", courseRouter);
+// app.use("/student", studentRouter);
+// app.use("/courses", courseRouter);
+// app.use("/:id", studentRouter);
+// app.use("/:id", courseRouter);
 app.use("/signup", authRouter);
-// app.use("/:id", authRouter);
-
+app.use("/api/products", authentication, productRouter);
+app.use("/:id", productRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

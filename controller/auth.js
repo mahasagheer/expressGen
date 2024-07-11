@@ -4,7 +4,7 @@ const { setUser, getUser } = require("../service/auth");
 
 const Signup = require("../modals/registration");
 
-const key = "pwd@1234";
+const key = "pop$#960corn";
 
 async function handleSignupPost(req, res) {
   const { email, password, username } = req.body;
