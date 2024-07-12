@@ -1,40 +1,50 @@
 const mongoose = require("mongoose");
+// const Joi = require("joi");
+
+// const AuthValidation = Joi.object({
+//   title: Joi.string().min(10).max(30).required(),
+//   description: Joi.string().min(50).max(250).required(),
+//   category: Joi.string().required(),
+//   price: Joi.number().required(),
+//   discountPercentage: Joi.number().required(),
+//   rating: Joi.number().max(5).required(),
+//   stock: Joi.number().required(),
+//   brand: Joi.number().required(),
+// });
 
 const productSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    unique: [true, "Title name of every product must be unique"],
+    unique: true,
   },
   description: {
     type: String,
-    max: [250, "Not more than 250 characters"],
-    required: [true, "Description required"],
+    required: true,
   },
   category: {
     type: String,
-    required: [true, "Description required"],
+    required: true,
   },
   price: {
     type: Number,
-    required: [true, "Description required"],
+    required: true,
   },
   discountPercentage: {
     type: Number,
-    required: [true, "Description required"],
+    required: true,
   },
   rating: {
     type: Number,
-    required: [true, "Description required"],
-    min: [5, "Rating must below than 5"],
+    required: true,
   },
   stock: {
     type: Number,
-    required: [true, "Description required"],
+    required: true,
   },
   brand: {
     type: String,
-    required: [true, "Description required"],
+    required: true,
   },
 });
 const Products = mongoose.model("Products", productSchema);

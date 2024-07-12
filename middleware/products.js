@@ -1,11 +1,19 @@
-const { setUser } = require("../service/auth");
+const { getUser } = require("../service/auth");
+const { LocalStorage } = require("node-localstorage");
+const localStorage = new LocalStorage("./scratch");
 
 async function authentication(req, res, next) {
-  if (!setUser) {
-    res.send("User Logged In");
-    next();
+  const token = localStorage.getItem("user");
+  if (!token) {
+    return null;
   }
-  res.send("User LOGGED OUT");
+  const user = getUser(token);
+  if (!user)
+    return res.status(404).json({
+      msg: "User Not valid",
+    });
+  req.user = user;
+  next();
 }
 module.exports = {
   authentication,

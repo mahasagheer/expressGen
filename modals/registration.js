@@ -21,5 +21,5 @@ const registrationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Signup = mongoose.model("Signup", registrationSchema);
-module.exports = Signup;
+const User = mongoose.model("Signup", registrationSchema);
+module.exports = User;

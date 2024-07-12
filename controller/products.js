@@ -1,11 +1,12 @@
 const Products = require("../modals/product");
+// const { AuthValidation } = require("../modals/product");
 
 async function AllProductGet(req, res) {
   try {
     const products = await Products.find({});
-    return res.json(products);
+    res.status(200).json(products);
   } catch {
-    return res.send("Unable to Fetch ");
+    res.status(500).json({ msg: "Unable to Fetch " });
   }
 }
 async function ProductGet(req, res) {
@@ -20,6 +21,7 @@ async function ProductGet(req, res) {
 }
 async function ProductPost(req, res) {
   try {
+    // const body = await AuthValidation.validateAsync(req.body);
     const {
       title,
       description,
@@ -40,14 +42,16 @@ async function ProductPost(req, res) {
       stock: stock,
       brand: brand,
     });
+    newProduct = res.status(201).json({ msg: "Success", _id: newProduct._id });
     newProduct = newProduct.save();
-    newProduct = res.status(201).json({ msg: "Success" });
   } catch {
     return res.status(404).json({ msg: "Server Not found" });
   }
 }
 async function ProductPut(req, res) {
   try {
+    // const body = await AuthValidation.validateAsync(req.body);
+
     const {
       title,
       description,

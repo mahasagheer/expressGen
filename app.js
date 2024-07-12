@@ -32,6 +32,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 // app.use("/student", studentRouter);
@@ -39,7 +48,7 @@ app.use("/users", usersRouter);
 // app.use("/:id", studentRouter);
 // app.use("/:id", courseRouter);
 app.use("/signup", authRouter);
-app.use("/api/products", authentication, productRouter);
+app.use("/api/product", authentication, productRouter);
 app.use("/:id", productRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
