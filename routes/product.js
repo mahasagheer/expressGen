@@ -4,12 +4,12 @@ const {
   AllProductGet,
   ProductDelete,
   ProductGet,
-  ProductPost,
+  // ProductPost,
   ProductPut,
 } = require("../controller/products");
 
 router
-  .post("/", ProductPost)
+  // .post("/", ProductPost)
   .get("/", AllProductGet)
   .get("/:id", ProductGet)
   .put("/:id", ProductPut)

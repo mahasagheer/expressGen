@@ -11,6 +11,9 @@ var usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const { authentication } = require("./middleware/products");
+const multerRouter = require("./routes/multer");
+// const cloudinaryRouter = require("./routes/cloudinary");
+const cloudinary = require("./utilities/cloudinary");
 
 mongoose
   .connect("mongodb://localhost:27017/task")
@@ -50,6 +53,30 @@ app.use("/users", usersRouter);
 app.use("/signup", authRouter);
 app.use("/api/product", authentication, productRouter);
 app.use("/:id", productRouter);
+// app.use("/api/cloudinary", cloudinaryRouter);
+app.use("/image/upload", multerRouter);
+app.use("/api", multerRouter);
+app.post("/cloudinary", async (req, res) => {
+  const { image } = req.body;
+  const uploadResult = await cloudinary.uploader.upload(
+    image,
+    {
+      public_id: "images",
+    },
+    function (error, result) {
+      if (error) {
+        console.log(error);
+      }
+      console.log(result);
+      try {
+        res.status(200).json(uploadResult);
+      } catch (err) {
+        console.log(error);
+      }
+    }
+  );
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

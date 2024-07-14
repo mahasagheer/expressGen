@@ -19,35 +19,35 @@ async function ProductGet(req, res) {
     });
   }
 }
-async function ProductPost(req, res) {
-  try {
-    // const body = await AuthValidation.validateAsync(req.body);
-    const {
-      title,
-      description,
-      category,
-      price,
-      discountPercentage,
-      rating,
-      stock,
-      brand,
-    } = req.body;
-    let newProduct = new Products({
-      title: title,
-      description: description,
-      category: category,
-      price: price,
-      discountPercentage: discountPercentage,
-      rating: rating,
-      stock: stock,
-      brand: brand,
-    });
-    newProduct = res.status(201).json({ msg: "Success", _id: newProduct._id });
-    newProduct = newProduct.save();
-  } catch {
-    return res.status(404).json({ msg: "Server Not found" });
-  }
-}
+// async function ProductPost(req, res) {
+//   try {
+//     // const body = await AuthValidation.validateAsync(req.body);
+//     const {
+//       title,
+//       description,
+//       category,
+//       price,
+//       discountPercentage,
+//       rating,
+//       stock,
+//       brand,
+//     } = req.body;
+//     let newProduct = await Products.create({
+//       title: title,
+//       description: description,
+//       category: category,
+//       price: price,
+//       discountPercentage: discountPercentage,
+//       rating: rating,
+//       stock: stock,
+//       brand: brand,
+//     });
+//     newProduct = newProduct.save();
+//     newProduct = res.status(201).json({ msg: "Success", id: newProduct._id });
+//   } catch {
+//     return res.status(404).json({ msg: "Server Not found" });
+//   }
+// }
 async function ProductPut(req, res) {
   try {
     // const body = await AuthValidation.validateAsync(req.body);
@@ -96,6 +96,6 @@ module.exports = {
   AllProductGet,
   ProductDelete,
   ProductGet,
-  ProductPost,
+  // ProductPost,
   ProductPut,
 };
