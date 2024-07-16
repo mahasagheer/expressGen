@@ -12,6 +12,9 @@ const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const { authentication } = require("./middleware/products");
 const multerRouter = require("./routes/multer");
+const fs = require("fs");
+const Image = require("./modals/image");
+
 // const cloudinaryRouter = require("./routes/cloudinary");
 const cloudinary = require("./utilities/cloudinary");
 
@@ -26,7 +29,7 @@ mongoose
 var app = express();
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
+app.set("/public", path.join(__dirname, "public"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
@@ -56,6 +59,12 @@ app.use("/:id", productRouter);
 // app.use("/api/cloudinary", cloudinaryRouter);
 app.use("/image/upload", multerRouter);
 app.use("/api", multerRouter);
+app.post("/localstorage", async (req, res) => {
+  const { token } = req.body;
+  fs.writeFile("token.txt", token, (err) => {
+    console.log(err);
+  });
+});
 app.post("/cloudinary", async (req, res) => {
   const { image } = req.body;
   const uploadResult = await cloudinary.uploader.upload(
@@ -76,12 +85,22 @@ app.post("/cloudinary", async (req, res) => {
     }
   );
 });
+app.get("/cloudinary/get/images", async (req, res) => {
+  try {
+    const products = await Image.find({});
+    console.log(products);
+    res.status(200).send({ status: "ok", data: products });
+  } catch (err) {
+    res.status(404).send("Not Found...");
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
+app.use(express.static("public"));
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
