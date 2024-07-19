@@ -1,9 +1,8 @@
 const { getUser } = require("../service/auth");
-const { LocalStorage } = require("node-localstorage");
-const localStorage = new LocalStorage("./scratch");
 
 async function authentication(req, res, next) {
-  const token = localStorage.getItem("user");
+  const token = req.headers.authorization;
+  console.log(token);
   if (!token) {
     return null;
   }

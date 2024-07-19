@@ -1,5 +1,4 @@
 const Products = require("../modals/product");
-// const { AuthValidation } = require("../modals/product");
 
 async function AllProductGet(req, res) {
   try {

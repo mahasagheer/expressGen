@@ -1,7 +1,5 @@
 const crypto = require("crypto-js");
-const { setUser, getUser } = require("../service/auth");
-const { LocalStorage } = require("node-localstorage");
-const localStorage = new LocalStorage("./scratch");
+const { setUser } = require("../service/auth");
 
 const User = require("../modals/registration");
 
@@ -23,7 +21,6 @@ async function handleSignupPost(req, res) {
 async function handleSignup(req, res) {
   try {
     const { email, password, username } = req.body;
-    console.log(req.headers);
     let data = await User.findOne({ email: email });
     if (data) {
       const decrypted = crypto.AES.decrypt(data.password, key).toString(
@@ -31,8 +28,7 @@ async function handleSignup(req, res) {
       );
       if (decrypted === password && data.username === username) {
         const token = setUser(data);
-        localStorage.setItem("user", token);
-        getUser(token);
+
         res.json({
           msg: "User Logged In",
           token: token,
@@ -44,7 +40,6 @@ async function handleSignup(req, res) {
       });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send("Internal Server Error");
   }
 }

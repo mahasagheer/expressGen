@@ -14,9 +14,9 @@ const { authentication } = require("./middleware/products");
 const multerRouter = require("./routes/multer");
 const fs = require("fs");
 const Image = require("./modals/image");
-
-// const cloudinaryRouter = require("./routes/cloudinary");
 const cloudinary = require("./utilities/cloudinary");
+const { getUser } = require("./service/auth");
+var cors = require("cors");
 
 mongoose
   .connect("mongodb://localhost:27017/task")
@@ -38,14 +38,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   next();
+// });
+
+app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -56,15 +58,8 @@ app.use("/users", usersRouter);
 app.use("/signup", authRouter);
 app.use("/api/product", authentication, productRouter);
 app.use("/:id", productRouter);
-// app.use("/api/cloudinary", cloudinaryRouter);
 app.use("/image/upload", multerRouter);
 app.use("/api", multerRouter);
-app.post("/localstorage", async (req, res) => {
-  const { token } = req.body;
-  fs.writeFile("token.txt", token, (err) => {
-    console.log(err);
-  });
-});
 app.post("/cloudinary", async (req, res) => {
   const { image } = req.body;
   const uploadResult = await cloudinary.uploader.upload(
@@ -94,7 +89,12 @@ app.get("/cloudinary/get/images", async (req, res) => {
     res.status(404).send("Not Found...");
   }
 });
-
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
